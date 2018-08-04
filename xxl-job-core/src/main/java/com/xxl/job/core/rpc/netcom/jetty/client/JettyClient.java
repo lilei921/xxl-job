@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
  * @author xuxueli 2015-11-24 22:25:15
  */
 public class JettyClient {
+
     private static Logger logger = LoggerFactory.getLogger(JettyClient.class);
 
     public RpcResponse send(RpcRequest request) throws Exception {
@@ -20,6 +21,7 @@ public class JettyClient {
             // serialize request
             byte[] requestBytes = HessianSerializer.serialize(request);
 
+            logger.info(">>>>>>>>>>>>>>>> jetty client send request , address: {}", request.getServerAddress());
             // reqURL
             String reqURL = request.getServerAddress();
             if (reqURL != null && reqURL.toLowerCase().indexOf("http") == -1) {
@@ -38,6 +40,7 @@ public class JettyClient {
             RpcResponse rpcResponse = (RpcResponse) HessianSerializer.deserialize(responseBytes, RpcResponse.class);
             return rpcResponse;
         } catch (Exception e) {
+
             logger.error(e.getMessage(), e);
 
             RpcResponse rpcResponse = new RpcResponse();

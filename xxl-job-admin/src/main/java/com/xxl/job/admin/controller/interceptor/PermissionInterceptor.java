@@ -20,9 +20,11 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 
 
     public static final String LOGIN_IDENTITY_KEY = "XXL_JOB_LOGIN_IDENTITY";
+
     public static final String LOGIN_IDENTITY_TOKEN;
 
     static {
+        
         String username = XxlJobAdminConfig.getAdminConfig().getLoginUsername();
         String password = XxlJobAdminConfig.getAdminConfig().getLoginPassword();
 

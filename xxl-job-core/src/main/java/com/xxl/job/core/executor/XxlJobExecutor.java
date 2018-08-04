@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by xuxueli on 2016/3/2 21:14.
  */
 public class XxlJobExecutor implements ApplicationContextAware {
+
     private static final Logger logger = LoggerFactory.getLogger(XxlJobExecutor.class);
 
     // ---------------------- param ----------------------
@@ -80,7 +81,10 @@ public class XxlJobExecutor implements ApplicationContextAware {
 
     // ---------------------- start + stop ----------------------
     public void start() throws Exception {
-        // init admin-client
+
+        logger.info("------------xxl job executor start------");
+
+        // init admin-client， 初始化任务管理中心的地址，多个的时候用英文逗号,分割
         initAdminBizList(adminAddresses, accessToken);
 
         // init executor-jobHandlerRepository
@@ -89,7 +93,7 @@ public class XxlJobExecutor implements ApplicationContextAware {
         // init logpath
         XxlJobFileAppender.initLogPath(logPath);
 
-        // init executor-server
+        // init executor-server(Registry-Server, Callback-Server(trigger child job))
         initExecutorServer(port, ip, appName, accessToken);
 
         // init JobLogFileCleanThread
@@ -97,8 +101,10 @@ public class XxlJobExecutor implements ApplicationContextAware {
     }
 
     public void destroy() {
+
         // destory JobThreadRepository
         if (JobThreadRepository.size() > 0) {
+
             for (Map.Entry<Integer, JobThread> item : JobThreadRepository.entrySet()) {
                 removeJobThread(item.getKey(), "web container destroy and kill the job.");
             }
@@ -117,6 +123,8 @@ public class XxlJobExecutor implements ApplicationContextAware {
     private static List<AdminBiz> adminBizList;
 
     private static void initAdminBizList(String adminAddresses, String accessToken) throws Exception {
+
+        logger.info("--------------- XxlJobExecutor initAdminBizList ");
 
         if (adminAddresses != null && adminAddresses.trim().length() > 0) {
 
@@ -162,6 +170,7 @@ public class XxlJobExecutor implements ApplicationContextAware {
     private static ConcurrentHashMap<String, IJobHandler> jobHandlerRepository = new ConcurrentHashMap<String, IJobHandler>();
 
     public static IJobHandler registJobHandler(String name, IJobHandler jobHandler) {
+
         logger.info(">>>>>>>>>>> xxl-job register jobhandler success, name:{}, jobHandler:{}", name, jobHandler);
         return jobHandlerRepository.put(name, jobHandler);
     }

@@ -14,8 +14,8 @@ import java.util.concurrent.TimeUnit;
  * @author xuxueli 2018-07-03 21:08:07
  */
 public class JobTriggerPoolHelper {
-    private static Logger logger = LoggerFactory.getLogger(JobTriggerPoolHelper.class);
 
+    private static Logger logger = LoggerFactory.getLogger(JobTriggerPoolHelper.class);
 
     // ---------------------- trigger pool ----------------------
 
@@ -27,8 +27,8 @@ public class JobTriggerPoolHelper {
             new LinkedBlockingQueue<Runnable>(100000),
             new ThreadPoolExecutor.CallerRunsPolicy());
 
+    public void addTrigger(final int jobId) {
 
-    public void addTrigger(final int jobId){
         triggerPool.execute(new Runnable() {
             @Override
             public void run() {
@@ -37,7 +37,8 @@ public class JobTriggerPoolHelper {
         });
     }
 
-    public void stop(){
+    public void stop() {
+
         //triggerPool.shutdown();
         triggerPool.shutdownNow();
         logger.info(">>>>>>>>> xxl-job trigger thread pool shutdown success.");
@@ -52,7 +53,7 @@ public class JobTriggerPoolHelper {
         helper.addTrigger(jobId);
     }
 
-    public static void toStop(){
+    public static void toStop() {
         helper.stop();
     }
 

@@ -17,6 +17,7 @@ import java.lang.reflect.Proxy;
  * @author xuxueli 2015-10-29 20:18:32
  */
 public class NetComClientProxy implements FactoryBean<Object> {
+
     private static final Logger logger = LoggerFactory.getLogger(NetComClientProxy.class);
 
     // ---------------------- config ----------------------
@@ -33,9 +34,11 @@ public class NetComClientProxy implements FactoryBean<Object> {
 
     @Override
     public Object getObject() throws Exception {
-        return Proxy.newProxyInstance(Thread.currentThread()
-                        .getContextClassLoader(), new Class[]{iface},
+        return Proxy.newProxyInstance(
+                Thread.currentThread().getContextClassLoader(),
+                new Class[]{iface},
                 new InvocationHandler() {
+
                     @Override
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
@@ -55,6 +58,7 @@ public class NetComClientProxy implements FactoryBean<Object> {
                         request.setParameterTypes(method.getParameterTypes());
                         request.setParameters(args);
 
+                        logger.info("################### RpcRequest " + request.toString());
                         // send
                         RpcResponse response = client.send(request);
 
@@ -64,6 +68,9 @@ public class NetComClientProxy implements FactoryBean<Object> {
                             // 如果这里出现异常，最有可能的原因是连接调度中心时，连接失败，（失败原因包括网络不通，url地址不正确等等）
                             throw new Exception("Network request fail, response not found.");
                         }
+
+                        logger.info("################### RpcResponse " + response.toString());
+
                         if (response.isError()) {
                             throw new RuntimeException(response.getError());
                         } else {

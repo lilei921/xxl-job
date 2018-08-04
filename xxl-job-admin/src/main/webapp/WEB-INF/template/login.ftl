@@ -9,11 +9,15 @@
 <body class="hold-transition login-page">
 	<div class="login-box">
 		<div class="login-logo">
-			<a><b>XXL</b>JOB</a>
+			<#--<a><b>XXL</b>JOB</a>-->
+			<#--<a>${I18n.admin_name}</a>-->
+                <a></a><a></a><a></a><a></a>
 		</div>
+        <br><br><br>
 		<form id="loginForm" method="post" >
 			<div class="login-box-body">
-				<p class="login-box-msg">${I18n.admin_name}</p>
+				<p class="login-box-msg" style="font-size: 24px">${I18n.admin_name}</p>
+                    <#--<p></p><br>-->
 				<div class="form-group has-feedback">
 	            	<input type="text" name="userName" class="form-control" placeholder="${I18n.login_username_placeholder}" value="admin" maxlength="18" >
 	            	<span class="glyphicon glyphicon-envelope form-control-feedback"></span>

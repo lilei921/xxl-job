@@ -28,6 +28,7 @@ import java.util.List;
  */
 @Service
 public class AdminBizImpl implements AdminBiz {
+
     private static Logger logger = LoggerFactory.getLogger(AdminBizImpl.class);
 
     @Resource
@@ -42,8 +43,11 @@ public class AdminBizImpl implements AdminBiz {
 
     @Override
     public ReturnT<String> callback(List<HandleCallbackParam> callbackParamList) {
+
         for (HandleCallbackParam handleCallbackParam: callbackParamList) {
+
             ReturnT<String> callbackResult = callback(handleCallbackParam);
+
             logger.info(">>>>>>>>> JobApiController.callback {}, handleCallbackParam={}, callbackResult={}",
                     (callbackResult.getCode()==IJobHandler.SUCCESS.getCode()?"success":"fail"), handleCallbackParam, callbackResult);
         }
@@ -52,6 +56,8 @@ public class AdminBizImpl implements AdminBiz {
     }
 
     private ReturnT<String> callback(HandleCallbackParam handleCallbackParam) {
+
+        logger.info("<<<<<<<<< trigger callback >>>>>>>>>>>>>");
         // valid log item
         XxlJobLog log = xxlJobLogDao.load(handleCallbackParam.getLogId());
         if (log == null) {
@@ -66,9 +72,11 @@ public class AdminBizImpl implements AdminBiz {
         if (IJobHandler.SUCCESS.getCode() == handleCallbackParam.getExecuteResult().getCode()) {
             XxlJobInfo xxlJobInfo = xxlJobInfoDao.loadById(log.getJobId());
             if (xxlJobInfo!=null && StringUtils.isNotBlank(xxlJobInfo.getChildJobId())) {
-                callbackMsg = "<br><br><span style=\"color:#00c0ef;\" > >>>>>>>>>>>"+ I18nUtil.getString("jobconf_trigger_child_run") +"<<<<<<<<<<< </span><br>";
+                callbackMsg = "<br><br><span style=\"color:#00c0ef;\" > >>>>>>child job>>>>>"+ I18nUtil.getString("jobconf_trigger_child_run") +"<<<<<<<<<<< </span><br>";
 
                 String[] childJobIds = xxlJobInfo.getChildJobId().split(",");
+                logger.info("<<<<<<<<< trigger child job,jobs:{} >>>>>>>>>>>>>", childJobIds);
+
                 for (int i = 0; i < childJobIds.length; i++) {
                     int childJobId = (StringUtils.isNotBlank(childJobIds[i]) && StringUtils.isNumeric(childJobIds[i]))?Integer.valueOf(childJobIds[i]):-1;
                     if (childJobId > 0) {

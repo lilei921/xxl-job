@@ -25,7 +25,8 @@ public class JettyServerHandler extends AbstractHandler {
 
 	@Override
 	public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		
+
+		logger.info("+++++++++++++++++++++ jetty server handler");
 		// invoke
         RpcResponse rpcResponse = doInvoke(request);
 
@@ -53,6 +54,7 @@ public class JettyServerHandler extends AbstractHandler {
 			}
 			RpcRequest rpcRequest = (RpcRequest) HessianSerializer.deserialize(requestBytes, RpcRequest.class);
 
+			logger.info(">>>>>>>>>>>>> jetty server recevier, requets: {}", rpcRequest.toString());
 			// invoke
 			RpcResponse rpcResponse = NetComServerFactory.invokeService(rpcRequest, null);
 			return rpcResponse;

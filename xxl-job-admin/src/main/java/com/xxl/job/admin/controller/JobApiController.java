@@ -28,7 +28,7 @@ public class JobApiController {
         try {
             // deserialize request
             byte[] requestBytes = HttpClientUtil.readBytes(request);
-            if (requestBytes == null || requestBytes.length==0) {
+            if (requestBytes == null || requestBytes.length == 0) {
                 RpcResponse rpcResponse = new RpcResponse();
                 rpcResponse.setError("RpcRequest byte[] is null");
                 return rpcResponse;
@@ -48,15 +48,17 @@ public class JobApiController {
     }
 
     @RequestMapping(AdminBiz.MAPPING)
-    @PermessionLimit(limit=false)
+    @PermessionLimit(limit = false)
     public void api(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        logger.info(">>>>>>>>>>>>>>>>> job api controller, ");
         // invoke
         RpcResponse rpcResponse = doInvoke(request);
 
         // serialize response
         byte[] responseBytes = HessianSerializer.serialize(rpcResponse);
 
+        logger.info(">>>>>>>>>>>>>> " + new String(responseBytes, "UTF-8"));
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
         //baseRequest.setHandled(true);

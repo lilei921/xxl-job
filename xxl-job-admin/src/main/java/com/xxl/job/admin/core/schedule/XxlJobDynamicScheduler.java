@@ -69,6 +69,8 @@ public final class XxlJobDynamicScheduler implements ApplicationContextAware {
 
     // ---------------------- init + destroy ----------------------
     public void init() throws Exception {
+
+        logger.info(">>>>>>>>> init xxl-job admin start.");
         // admin registry monitor run
         JobRegistryMonitorHelper.getInstance().start();
 

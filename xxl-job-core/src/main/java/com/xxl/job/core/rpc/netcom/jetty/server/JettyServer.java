@@ -44,11 +44,13 @@ public class JettyServer {
 				try {
 					// Start server
 					server.start();
-					logger.info(">>>>>>>>>>> xxl-job jetty server start success at port:{}.", port);
+					logger.info(">>>>>>>>>>> xxl-job jetty server start success at 000000000 port:{}.", port);
 
+					logger.info(">>>>>>>>>>> start registry-server ");
 					// Start Registry-Server
 					ExecutorRegistryThread.getInstance().start(port, ip, appName);
 
+					logger.info(">>>>>>>>>>> start callback-server ");
 					// Start Callback-Server
 					TriggerCallbackThread.getInstance().start();
 
